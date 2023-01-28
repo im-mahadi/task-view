@@ -1,5 +1,5 @@
 export default async function postTask(title: string, description: string) {
-  const postTask = await fetch("http://localhost:3000/api/tasks", {
+  const postTask = await fetch("/api/tasks", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

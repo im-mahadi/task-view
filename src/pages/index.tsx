@@ -1,12 +1,29 @@
 import postTask from "@/server/post-task";
 import extractText from "@/util/extract-text";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../components/Card";
 import { Task } from "../interfaces/Task";
 
-export default function Home({ data: myTasks }: { data: Task[] }) {
+export default function Home() {
   const [newTask, setNewTask] = useState<string>('');
-  const [tasks, setTasks] = useState<Task[]>(myTasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const res = await fetch(`/api/tasks`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      const data = await res.json()
+      setTasks(data);
+    }, 300);
+
+    return () => clearInterval(interval);
+  }, []);
 
   //@ts-ignore
   const handleEnterPress = async (e) => {
@@ -46,21 +63,4 @@ export default function Home({ data: myTasks }: { data: Task[] }) {
       </div>
     </div>
   )
-}
-
-
-export async function getServerSideProps() {
-  const res = await fetch(`http://localhost:3000/api/tasks`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    }
-  )
-  const data = await res.json()
-
-  return {
-    props: { data },
-  }
 }
