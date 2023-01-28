@@ -1,5 +1,5 @@
+import { Task } from "@/interfaces/Task";
 import { useEffect, useState } from "react";
-import { Task } from "../interfaces/Task";
 import { AiFillPushpin, AiFillDelete } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
 

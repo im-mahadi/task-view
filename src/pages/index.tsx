@@ -1,8 +1,8 @@
 import postTask from "@/server/post-task";
 import extractText from "@/util/extract-text";
 import { useState } from "react";
-import Card from "./components/Card";
-import { Task } from "./interfaces/Task";
+import Card from "../components/Card";
+import { Task } from "../interfaces/Task";
 
 export default function Home({ data: myTasks }: { data: Task[] }) {
   const [newTask, setNewTask] = useState<string>('');
