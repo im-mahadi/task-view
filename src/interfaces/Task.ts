@@ -1,7 +1,8 @@
 export interface Task {
-    id: number
-    title: string
-    created: string
-    description: string
-    completePercentage: number
+  id: string
+  title: string
+  createdAt: string
+  description: string
+  completePercentage: number
+  isPinned: boolean
 }

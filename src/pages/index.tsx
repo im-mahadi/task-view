@@ -1,42 +1,26 @@
-import postTask from "@/server/post-task";
+import useTask from "@/hooks/useTask";
 import extractText from "@/util/extract-text";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Card from "../components/Card";
-import { Task } from "../interfaces/Task";
 
 export default function Home() {
   const [newTask, setNewTask] = useState<string>('');
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const { tasks, addTask, removeTask, updateTask } = useTask();
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const res = await fetch(`/api/tasks`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      )
-      const data = await res.json()
-      setTasks(data);
-    }, 300);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  //@ts-ignore
-  const handleEnterPress = async (e) => {
-    const [title, description] = extractText(newTask);
-
+  const handleEnterPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      try {
-        const res = await postTask(title, description);
-        setTasks([...tasks, res]);
-        setNewTask('');
-      } catch (e) {
-        console.log(e);
-      }
+      const [title, description] = extractText(newTask);
+
+      addTask({
+        id: title + Math.random().toString(36).slice(2, 9),
+        title,
+        description,
+        createdAt: new Date().toISOString(),
+        completePercentage: 0,
+        isPinned: false
+      });
+
+      setNewTask('');
     }
   }
 
@@ -55,7 +39,7 @@ export default function Home() {
           {
             tasks.map((task) => (
               <div key={task.id}>
-                <Card task={task} />
+                <Card task={task} removeTask={removeTask} updateTask={updateTask} />
               </div>
             ))
           }
