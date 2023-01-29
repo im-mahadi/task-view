@@ -6,51 +6,63 @@ import { BiReset } from "react-icons/bi";
 export default function Card({ task, removeTask, updateTask }: {
   task: Task,
   removeTask: (id: string) => void,
-  updateTask: (id: string, task: Task) => void
+  updateTask: (id: string, completePercentage: number, isPinned?: boolean) => void
 }) {
-  const [progress, setProgress] = useState(0);
   const [color, setColor] = useState("radial-progress text-error");
 
+  /**
+   * Set color of radial progress bar based on
+   * completePercentage value of task object
+   */
   useEffect(() => {
-    if (progress === 100) {
+    if (task.completePercentage === 100) {
       setColor("radial-progress text-success");
     }
-    else if (progress === 75) {
+    else if (task.completePercentage === 75) {
       setColor("radial-progress text-primary");
-    } else if (progress === 50) {
+    } else if (task.completePercentage === 50) {
       setColor("radial-progress text-secondary");
-    } else if (progress === 25) {
+    } else if (task.completePercentage === 25) {
       setColor("radial-progress text-warning");
     }
-    else if (progress === 0) {
+    else if (task.completePercentage === 0) {
       setColor("radial-progress text-error");
     }
-  }, [progress]);
+  }, [task.completePercentage]);
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card h-48 bg-base-100 shadow-xl">
       <div className="card-body relative">
-        {
-          task.isPinned ? <AiFillPushpin color="purple" size={20} className="absolute top-3 right-3" /> : null
-        }
-
+        <AiFillPushpin
+          color={task.isPinned ? "red" : "#dfd9d7"}
+          size={30}
+          className="absolute top-3 right-3"
+          onClick={() => { updateTask(task.id, -1, !task.isPinned); }}
+        />
         <h2 className="card-title">{task.title}</h2>
         <p>{task.description}</p>
         <div className="card-actions mt-5 justify-end">
           {
-            progress >= 125 ? (
+            task.completePercentage > 100 ? (
               <div className="flex gap-2">
                 <button onClick={() => removeTask(task.id)} className="btn btn-warning"><AiFillDelete size={24} /></button>
-                <button className="btn btn-secondary" onClick={() => setProgress(0)}><BiReset size={24} /></button>
+                <button className="btn btn-secondary" onClick={() => {
+                  updateTask(task.id, 0);
+                }}
+                >
+                  <BiReset size={24} />
+                </button>
               </div>
             ) : (
               <button
                 className={color}
                 // @ts-ignore
-                style={{ "--value": progress }}
-                onClick={() => setProgress(progress + 25)}
+                style={{ "--value": task.completePercentage }}
+                onClick={() => {
+                  updateTask(task.id, task.completePercentage + 25);
+                }}
               >
-                {progress}%
+                <span className="font-bold">{task.completePercentage}%</span>
               </button>
             )
           }

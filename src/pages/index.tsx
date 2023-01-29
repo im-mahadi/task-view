@@ -7,6 +7,11 @@ export default function Home() {
   const [newTask, setNewTask] = useState<string>('');
   const { tasks, addTask, removeTask, updateTask } = useTask();
 
+  /**
+   * Handle enter press on input field to add new task to
+   * tasks array and clear input field
+   * @param e KeyboardEvent from input field
+   */
   const handleEnterPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const [title, description] = extractText(newTask);
@@ -25,17 +30,19 @@ export default function Home() {
   }
 
   return (
-    <div className="w-screen h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-      <div className="w-11/12 md:w-9/12 lg:w-4/6 xl:w-5/12 2xl:w-5/12 mx-auto pt-16 flex flex-col justify-center">
+    <div className="bg-gradient-to-r w-screen h-screen from-indigo-500 via-purple-500 to-pink-500 overflow-auto">
+      <div className="mt-4 md:mt-8 lg:mt-10 flex flex-col justify-center">
         <input
           type="text"
           value={newTask}
           placeholder="Enter Task Here"
-          className="input w-full"
+          className="input w-11/12 lg:w-5/6 xl:w-4/6 mx-auto"
           onChange={(e) => setNewTask(e.currentTarget.value)}
           onKeyDown={(e) => handleEnterPress(e)}
         />
-        <div className="mt-16 w-full flex flex-wrap items-center justify-center gap-5">
+        <div
+          className="mt-8 md:mt-16 w-11/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8"
+        >
           {
             tasks.map((task) => (
               <div key={task.id}>
