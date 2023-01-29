@@ -1,0 +1,6 @@
+{
+    "markdown.validate.ignoredLinks": [
+        "'/screenshot/view.png'",
+        "'./screenshot/view.png'"
+    ]
+}
