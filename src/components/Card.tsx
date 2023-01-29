@@ -31,7 +31,7 @@ export default function Card({ task, removeTask, updateTask }: {
   }, [task.completePercentage]);
 
   return (
-    <div className="card h-48 bg-base-100 shadow-xl">
+    <div className="card h-56 bg-base-100 shadow-xl">
       <div className="card-body relative">
         <AiFillPushpin
           color={task.isPinned ? "red" : "#dfd9d7"}
