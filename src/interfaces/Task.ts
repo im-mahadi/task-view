@@ -4,5 +4,5 @@ export interface Task {
   createdAt: string
   description: string
   completePercentage: number
-  isPinned: boolean
+  isPinned?: boolean
 }
