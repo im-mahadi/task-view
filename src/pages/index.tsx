@@ -2,6 +2,7 @@ import useTask from "@/hooks/useTask";
 import extractText from "@/util/extract-text";
 import { useState } from "react";
 import Card from "@/components/Card";
+import Head from "next/head";
 
 export default function Home() {
   const [newTask, setNewTask] = useState<string>('');
@@ -31,6 +32,12 @@ export default function Home() {
 
   return (
     <div className="bg-gradient-to-r w-screen h-screen from-indigo-500 via-purple-500 to-pink-500 overflow-auto">
+      <Head>
+        <title>Task Viewer</title>
+        <meta name="description" content="view task and track the progress" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/task.ico" />
+      </Head>
       <div className="mt-4 md:mt-8 lg:mt-10 flex flex-col justify-center">
         <input
           type="text"
