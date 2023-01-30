@@ -31,7 +31,7 @@ export default function Card({ task, removeTask, updateTask }: {
   }, [task.completePercentage]);
 
   return (
-    <div className="card h-56 bg-base-100 shadow-xl">
+    <div className="card h-56 bg-base-100 shadow-2xl">
       <div className="card-body relative">
         <AiFillPushpin
           color={task.isPinned ? "red" : "#dfd9d7"}
@@ -39,8 +39,9 @@ export default function Card({ task, removeTask, updateTask }: {
           className="absolute top-3 right-3"
           onClick={() => { updateTask(task.id, -1, !task.isPinned); }}
         />
-        <h2 className="card-title">{task.title}</h2>
-        <p>{task.description}</p>
+        <p className="text-4xl text-pink-600 font-bold font-mono absolute -top-2 -left-8 -rotate-45 bg-yellow-100 p-1 rounded-md">{task.createdAt}th</p>
+        <p className="card-title">{task.title}</p>
+        <p >{task.description}</p>
         <div className="card-actions mt-5 justify-end">
           {
             task.completePercentage > 100 ? (
