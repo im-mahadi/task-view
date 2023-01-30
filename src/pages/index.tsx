@@ -21,7 +21,7 @@ export default function Home() {
         id: title + Math.random().toString(36).slice(2, 9),
         title,
         description,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date().getDate().toString(),
         completePercentage: 0,
         isPinned: false
       });
