@@ -2,6 +2,12 @@ import { Task } from "@/interfaces/Task";
 import { useEffect, useState } from "react";
 import { AiFillPushpin, AiFillDelete } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
+import { Courgette } from '@next/font/google'
+
+const courgette = Courgette({
+  subsets: ['latin'],
+  weight: "400"
+})
 
 export default function Card({ task, removeTask, updateTask }: {
   task: Task,
@@ -39,13 +45,15 @@ export default function Card({ task, removeTask, updateTask }: {
           className="absolute top-3 right-3"
           onClick={() => { updateTask(task.id, -1, !task.isPinned); }}
         />
-        <p className="text-4xl text-pink-600 font-bold font-mono absolute -top-2 -left-8 -rotate-45 bg-yellow-100 p-1 rounded-md">{task.createdAt}th</p>
+        <span className={courgette.className}>
+          <p className="text-4xl text-pink-600 font-bold absolute -top-1 -left-5 -rotate-45 bg-orange-200 p-1 rounded-md shadow-lg">{task.createdAt}th</p>
+        </span>
         <p className="card-title">{task.title}</p>
         <p >{task.description}</p>
         <div className="card-actions mt-5 justify-end">
           {
             task.completePercentage > 100 ? (
-              <div className="flex gap-2">
+              <div className="flex gap-2 mt-8">
                 <button onClick={() => removeTask(task.id)} className="btn btn-warning"><AiFillDelete size={24} /></button>
                 <button className="btn btn-secondary" onClick={() => {
                   updateTask(task.id, 0);
