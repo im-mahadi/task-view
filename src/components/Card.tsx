@@ -1,20 +1,24 @@
-import { Task } from "@/interfaces/Task";
-import { useEffect, useState } from "react";
-import { AiFillPushpin, AiFillDelete } from "react-icons/ai";
-import { BiReset } from "react-icons/bi";
-import { Courgette } from '@next/font/google'
+import { Task } from '@/interfaces/Task';
+import { useEffect, useState } from 'react';
+import { AiFillDelete } from 'react-icons/ai';
+import { BiReset } from 'react-icons/bi';
+import { Courgette } from '@next/font/google';
 
 const courgette = Courgette({
   subsets: ['latin'],
-  weight: "400"
-})
+  weight: '400',
+});
 
-export default function Card({ task, removeTask, updateTask }: {
-  task: Task,
-  removeTask: (id: string) => void,
-  updateTask: (id: string, completePercentage: number, isPinned?: boolean) => void
+export default function Card({
+  task,
+  removeTask,
+  updateTask,
+}: {
+  task: Task;
+  removeTask: (id: string) => void;
+  updateTask: (id: string, completePercentage: number) => void;
 }) {
-  const [color, setColor] = useState("radial-progress text-error");
+  const [color, setColor] = useState('radial-progress text-error');
 
   /**
    * Set color of radial progress bar based on
@@ -22,61 +26,60 @@ export default function Card({ task, removeTask, updateTask }: {
    */
   useEffect(() => {
     if (task.completePercentage === 100) {
-      setColor("radial-progress text-success");
-    }
-    else if (task.completePercentage === 75) {
-      setColor("radial-progress text-primary");
+      setColor('radial-progress text-success');
+    } else if (task.completePercentage === 75) {
+      setColor('radial-progress text-primary');
     } else if (task.completePercentage === 50) {
-      setColor("radial-progress text-secondary");
+      setColor('radial-progress text-secondary');
     } else if (task.completePercentage === 25) {
-      setColor("radial-progress text-warning");
-    }
-    else if (task.completePercentage === 0) {
-      setColor("radial-progress text-error");
+      setColor('radial-progress text-warning');
+    } else if (task.completePercentage === 0) {
+      setColor('radial-progress text-error');
     }
   }, [task.completePercentage]);
 
   return (
-    <div className="card h-56 bg-base-100 shadow-2xl">
-      <div className="card-body relative">
-        <AiFillPushpin
-          color={task.isPinned ? "red" : "#dfd9d7"}
-          size={30}
-          className="absolute top-3 right-3"
-          onClick={() => { updateTask(task.id, -1, !task.isPinned); }}
-        />
+    <div className='card h-56 bg-base-100 shadow-2xl'>
+      <div className='card-body relative'>
         <span className={courgette.className}>
-          <p className="text-4xl text-pink-600 font-bold absolute -top-1 -left-5 -rotate-45 bg-orange-200 p-1 rounded-md shadow-lg">{task.createdAt}th</p>
+          <p className='absolute -top-1 -left-5 -rotate-45 rounded-md bg-orange-200 p-1 text-4xl font-bold text-pink-600 shadow-lg'>
+            {task.createdAt}th
+          </p>
         </span>
-        <p className="card-title">{task.title}</p>
-        <p >{task.description}</p>
-        <div className="card-actions mt-5 justify-end">
-          {
-            task.completePercentage > 100 ? (
-              <div className="flex gap-2 mt-8">
-                <button onClick={() => removeTask(task.id)} className="btn btn-warning"><AiFillDelete size={24} /></button>
-                <button className="btn btn-secondary" onClick={() => {
+        <p className='card-title'>{task.title}</p>
+        <p>{task.description}</p>
+        <div className='card-actions mt-5 justify-end'>
+          {task.completePercentage > 100 ? (
+            <div className='mt-8 flex gap-2'>
+              <button
+                onClick={() => removeTask(task.id)}
+                className='btn-warning btn'
+              >
+                <AiFillDelete size={24} />
+              </button>
+              <button
+                className='btn-secondary btn'
+                onClick={() => {
                   updateTask(task.id, 0);
                 }}
-                >
-                  <BiReset size={24} />
-                </button>
-              </div>
-            ) : (
-              <button
-                className={color}
-                // @ts-ignore
-                style={{ "--value": task.completePercentage }}
-                onClick={() => {
-                  updateTask(task.id, task.completePercentage + 25);
-                }}
               >
-                <span className="font-bold">{task.completePercentage}%</span>
+                <BiReset size={24} />
               </button>
-            )
-          }
+            </div>
+          ) : (
+            <button
+              className={color}
+              // @ts-ignore
+              style={{ '--value': task.completePercentage }}
+              onClick={() => {
+                updateTask(task.id, task.completePercentage + 25);
+              }}
+            >
+              <span className='font-bold'>{task.completePercentage}%</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
-  )
+  );
 }

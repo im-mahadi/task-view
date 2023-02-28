@@ -5,8 +5,8 @@
  * @returns An array of the first and second part of the text.
  */
 export default function extractText(text: string) {
-  const firstPart = text.split("|")[0];
-  const secondPart = text.split("|")[1];
+  const firstPart = text.split('|')[0];
+  const secondPart = text.split('|')[1];
 
   return [firstPart, secondPart];
 }

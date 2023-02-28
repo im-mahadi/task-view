@@ -1,5 +1,5 @@
-import { Task } from "@/interfaces/Task";
-import { useEffect, useState, useRef } from "react";
+import { Task } from '@/interfaces/Task';
+import { useEffect, useState, useRef } from 'react';
 
 export default function useTask() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -10,11 +10,11 @@ export default function useTask() {
    * is mounted for the first time
    */
   useEffect(() => {
-    if (window.localStorage.getItem("tasks")) {
-      setTasks(JSON.parse(window.localStorage.getItem("tasks") as string));
+    if (window.localStorage.getItem('tasks')) {
+      setTasks(JSON.parse(window.localStorage.getItem('tasks') as string));
     }
     setIsDataFetched(true);
-  }, [])
+  }, []);
 
   /**
    * Save tasks to localStorage when tasks array is updated
@@ -22,9 +22,9 @@ export default function useTask() {
    */
   useEffect(() => {
     if (isDataFetched) {
-      window.localStorage.setItem("tasks", JSON.stringify(tasks))
+      window.localStorage.setItem('tasks', JSON.stringify(tasks));
     }
-  }, [isDataFetched, tasks])
+  }, [isDataFetched, tasks]);
 
   /**
    * Add task to tasks array
@@ -32,7 +32,7 @@ export default function useTask() {
    */
   const addTask = (task: Task) => {
     setTasks([...tasks, task]);
-  }
+  };
 
   /**
    * Remove task from tasks array by ID
@@ -40,7 +40,7 @@ export default function useTask() {
    */
   const removeTask = (id: string) => {
     setTasks(tasks.filter((task) => task.id !== id));
-  }
+  };
 
   /**
    * Update task with new values (completePercentage and isPinned)
@@ -48,16 +48,15 @@ export default function useTask() {
    * @param completePercentage 0 - 100 (25% increments) or -1 to ignore
    * @param isPinned true or false or undefined to ignore
    */
-  const updateTask = (id: string, completePercentage: number, isPinned?: boolean) => {
+  const updateTask = (id: string, completePercentage: number) => {
     const updatedTask = tasks.find((task) => task.id === id);
     if (updatedTask) {
       if (completePercentage != -1) {
         updatedTask.completePercentage = completePercentage;
       }
-      updatedTask.isPinned = isPinned;
       setTasks([...tasks]);
     }
-  }
+  };
 
   return { tasks, addTask, removeTask, updateTask };
 }
